@@ -20,7 +20,7 @@ import Animated, {
   FadeInDown
 } from "react-native-reanimated"
 import { LinearGradient } from "expo-linear-gradient"
-import { Twitter, Instagram, Linkedin, Github, ExternalLink } from "react-native-feather"
+import { Twitter, Instagram, Linkedin, Github, ExternalLink, Heart } from "react-native-feather"
 import { StatusBar } from "expo-status-bar"
 import { useNavigation } from "@react-navigation/native"
 import { useTheme } from "../components/theme-provider"
@@ -76,315 +76,387 @@ export default function AboutScreen() {
 
   return (
     <LayoutWithNavbar>
-    <SafeAreaView style={[
-      styles.container,
-      { backgroundColor: isDark ? "#0D1117" : "#F8FAFC" }
-    ]} edges={["top"]}>
-      <StatusBar style={isDark ? "light" : "dark"} />
-      <ScrollView 
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <Animated.View entering={FadeInDown.duration(500).delay(100)}>
-          <Text style={[
-            styles.pageTitle,
-            { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Bold" }
-          ]}>
-            About Ishaara
-          </Text>
-        </Animated.View>
-
-        {/* Project Information */}
-        {projectInfo.map((info, index) => {
-          const isEven = index % 2 === 0
-          
-          return (
-            <Animated.View 
-              key={index}
-              entering={FadeInDown.duration(500).delay(200 + index * 100)}
-              style={styles.infoContainer}
-            >
-              <View style={[
-                styles.infoContent,
-                { flexDirection: isEven ? "column" : "column-reverse" }
-              ]}>
-                <View style={styles.textContainer}>
-                  <LinearGradient
-                    colors={isDark ? 
-                      ["rgba(15, 98, 254, 0.1)", "rgba(255, 87, 34, 0.05)"] : 
-                      ["rgba(15, 98, 254, 0.05)", "rgba(255, 87, 34, 0.05)"]}
-                    style={[
-                      styles.cardGradient,
-                      { borderColor: isDark ? "rgba(230, 237, 243, 0.1)" : "rgba(28, 28, 28, 0.1)" }
-                    ]}
-                  >
-                    <Text style={[
-                      styles.infoText,
-                      { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Regular" }
-                    ]}>
-                      {info.content}
-                    </Text>
-                  </LinearGradient>
-                </View>
-                
-                <View style={styles.imageContainer}>
-                  <Image
-                    source={{ uri: info.image }}
-                    style={styles.infoImage}
-                    resizeMode="cover"
-                  />
-                </View>
-              </View>
-            </Animated.View>
-          )
-        })}
-
-        {/* Legacy Website Section */}
-        <Animated.View 
-          entering={FadeInDown.duration(500).delay(500)}
-          style={styles.sectionContainer}
+      <SafeAreaView style={[
+        styles.container,
+        { backgroundColor: isDark ? "#0D1117" : "#F8FAFC" }
+      ]} edges={["top"]}>
+        <StatusBar style={isDark ? "light" : "dark"} />
+        <ScrollView 
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
         >
+          {/* Header Section */}
+          <View style={styles.headerContainer}>
           <LinearGradient
-            colors={isDark ? 
-              ["rgba(15, 98, 254, 0.1)", "rgba(255, 87, 34, 0.05)"] : 
-              ["rgba(15, 98, 254, 0.05)", "rgba(255, 87, 34, 0.05)"]}
-            style={[
-              styles.legacyCard,
-              { borderColor: isDark ? "rgba(230, 237, 243, 0.1)" : "rgba(28, 28, 28, 0.1)" }
-            ]}
+              colors={isDark ? 
+                ["rgba(15, 98, 254, 0.3)", "rgba(139, 92, 246, 0.3)"] : 
+                ["rgba(240, 248, 255, 0.9)", "rgba(224, 242, 254, 0.9)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.headerGradient}
+            >
+              <Animated.Text
+                entering={FadeInDown.duration(500).delay(100)}
+                style={[styles.pageTitle, { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Bold" }]}
+              >
+                About Ishaara
+              </Animated.Text>
+              <Text 
+                style={[
+                  styles.headerSubtitle, 
+                  { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Regular" }
+                ]}
+              >
+                Our mission, team, and journey
+              </Text>
+            </LinearGradient>
+          </View>
+
+          {/* Project Information */}
+          {projectInfo.map((info, index) => {
+            const isEven = index % 2 === 0
+            
+            return (
+              <Animated.View 
+                key={index}
+                entering={FadeInDown.duration(500).delay(200 + index * 100)}
+                style={styles.infoContainer}
+              >
+                <View style={[
+                  styles.infoContent,
+                  { flexDirection: isEven ? "column" : "column-reverse" }
+                ]}>
+                  <View style={styles.textContainer}>
+                    <LinearGradient
+                      colors={isDark ? 
+                        ["rgba(15, 98, 254, 0.1)", "rgba(255, 87, 34, 0.05)"] : 
+                        ["rgba(15, 98, 254, 0.05)", "rgba(255, 87, 34, 0.05)"]}
+                      style={[
+                        styles.cardGradient,
+                        { borderColor: isDark ? "rgba(230, 237, 243, 0.1)" : "rgba(28, 28, 28, 0.1)" }
+                      ]}
+                    >
+                      <Text style={[
+                        styles.infoText,
+                        { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Regular" }
+                      ]}>
+                        {info.content}
+                      </Text>
+                    </LinearGradient>
+                  </View>
+                  
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={{ uri: info.image }}
+                      style={styles.infoImage}
+                      resizeMode="cover"
+                    />
+                    <LinearGradient
+                      colors={["transparent", "rgba(0,0,0,0.6)"]}
+                      style={styles.imageOverlay}
+                    />
+                  </View>
+                </View>
+              </Animated.View>
+            )
+          })}
+
+          {/* Legacy Website Section */}
+          <Animated.View 
+            entering={FadeInDown.duration(500).delay(500)}
+            style={styles.sectionContainer}
           >
-            <Text style={[
-              styles.legacyTitle,
-              { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Bold" }
-            ]}>
-              Our Journey
-            </Text>
-            <Text style={[
-              styles.legacyText,
-              { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Regular" }
-            ]}>
-              We're excited to share that this current app represents an evolution of our project. Our team initially developed the Ishaara platform using React, which you can still explore at our legacy website. This original version served as the foundation for our current implementation, showcasing our commitment to continuous improvement and adoption of modern technologies.
-            </Text>
-            <TouchableOpacity
-              style={[
-                styles.legacyButton,
-                { 
-                  borderColor: isDark ? "rgba(230, 237, 243, 0.1)" : "rgba(28, 28, 28, 0.1)",
-                  backgroundColor: isDark ? "rgba(230, 237, 243, 0.05)" : "rgba(28, 28, 28, 0.05)"
-                }
-              ]}
-              onPress={() => openLink("https://ishaara.netlify.app/")}
+            <LinearGradient
+              colors={["#0F62FE", "#2196F3"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.legacyCard}
             >
               <Text style={[
-                styles.legacyButtonText,
-                { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Medium" }
+                styles.legacyTitle,
+                { color: "#FFFFFF", fontFamily: "Manrope-Bold" }
               ]}>
-                Visit Legacy Website
+                Our Journey
               </Text>
-              <ExternalLink 
-                stroke={isDark ? "#E6EDF3" : "#1C1C1C"} 
-                width={16} 
-                height={16} 
-                style={{ marginLeft: 8 }}
-              />
-            </TouchableOpacity>
-          </LinearGradient>
-        </Animated.View>
+              <Text style={[
+                styles.legacyText,
+                { color: "rgba(255, 255, 255, 0.9)", fontFamily: "Manrope-Regular" }
+              ]}>
+                We're excited to share that this current app represents an evolution of our project. Our team initially developed the Ishaara platform using React, which you can still explore at our legacy website. This original version served as the foundation for our current implementation, showcasing our commitment to continuous improvement and adoption of modern technologies.
+              </Text>
+              <TouchableOpacity
+                style={styles.legacyButton}
+                onPress={() => openLink("https://ishaara.netlify.app/")}
+              >
+                <Text style={[
+                  styles.legacyButtonText,
+                  { fontFamily: "Manrope-Medium" }
+                ]}>
+                  Visit Legacy Website
+                </Text>
+                <ExternalLink 
+                  stroke="#0F62FE" 
+                  width={16} 
+                  height={16} 
+                  style={{ marginLeft: 8 }}
+                />
+              </TouchableOpacity>
+            </LinearGradient>
+          </Animated.View>
 
-        {/* Thank You Section */}
-        <Animated.View 
-          entering={FadeInDown.duration(500).delay(600)}
-          style={styles.sectionContainer}
-        >
-          <LinearGradient
-            colors={isDark ? 
-              ["rgba(15, 98, 254, 0.1)", "rgba(255, 87, 34, 0.05)"] : 
-              ["rgba(15, 98, 254, 0.05)", "rgba(255, 87, 34, 0.05)"]}
-            style={[
-              styles.thanksCard,
-              { borderColor: isDark ? "rgba(230, 237, 243, 0.1)" : "rgba(28, 28, 28, 0.1)" }
-            ]}
+          {/* Thank You Section */}
+          <Animated.View 
+            entering={FadeInDown.duration(500).delay(600)}
+            style={styles.sectionContainer}
           >
-            <Text style={[
-              styles.thanksTitle,
-              { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Bold" }
-            ]}>
-              Special Thanks
-            </Text>
-            
-            <View style={styles.thanksProfile}>
-              <Image
-                source={{ uri: "https://i.ibb.co/Ny78szP/nicholas.jpg" }}
-                style={styles.thanksImage}
-              />
-              <View>
-                <Text style={[
-                  styles.thanksName,
-                  { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-SemiBold" }
-                ]}>
-                  Nicholas Renotte
-                </Text>
-                <Text style={[
-                  styles.thanksRole,
-                  { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Medium" }
-                ]}>
-                  AI Educator and Developer
-                </Text>
-              </View>
-            </View>
-            
-            <Text style={[
-              styles.thanksText,
-              { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Regular" }
-            ]}>
-              We extend our heartfelt thanks to Nicholas Renotte for his invaluable contributions to the field of artificial intelligence. His insightful YouTube videos have been an integral part of our project journey, providing clear explanations and practical demonstrations. His guidance through complex AI concepts has been superb, making difficult topics accessible and understandable.
-            </Text>
-            
-            <TouchableOpacity
-              style={styles.thanksButton}
-              onPress={() => openLink("https://github.com/nicknochnack")}
+            <LinearGradient
+              colors={["#FF5722", "#FF9800"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.thanksCard}
             >
-              <Text style={[styles.thanksButtonText, { fontFamily: "Manrope-Medium" }]}>
-                Visit Nicholas's Github
+              <Text style={[
+                styles.thanksTitle,
+                { color: "#FFFFFF", fontFamily: "Manrope-Bold" }
+              ]}>
+                Special Thanks
               </Text>
-              <Github stroke="#FFFFFF" width={16} height={16} style={{ marginLeft: 8 }} />
-            </TouchableOpacity>
-          </LinearGradient>
-        </Animated.View>
+              
+              <View style={styles.thanksProfile}>
+                <Image
+                  source={{ uri: "https://i.ibb.co/Ny78szP/nicholas.jpg" }}
+                  style={styles.thanksImage}
+                />
+                <View>
+                  <Text style={[
+                    styles.thanksName,
+                    { color: "#FFFFFF", fontFamily: "Manrope-SemiBold" }
+                  ]}>
+                    Nicholas Renotte
+                  </Text>
+                  <Text style={[
+                    styles.thanksRole,
+                    { color: "rgba(255, 255, 255, 0.9)", fontFamily: "Manrope-Medium" }
+                  ]}>
+                    AI Educator and Developer
+                  </Text>
+                </View>
+              </View>
+              
+              <Text style={[
+                styles.thanksText,
+                { color: "rgba(255, 255, 255, 0.9)", fontFamily: "Manrope-Regular" }
+              ]}>
+                We extend our heartfelt thanks to Nicholas Renotte for his invaluable contributions to the field of artificial intelligence. His insightful YouTube videos have been an integral part of our project journey, providing clear explanations and practical demonstrations. His guidance through complex AI concepts has been superb, making difficult topics accessible and understandable.
+              </Text>
+              
+              <TouchableOpacity
+                style={styles.thanksButton}
+                onPress={() => openLink("https://github.com/nicknochnack")}
+              >
+                <Text style={[styles.thanksButtonText, { fontFamily: "Manrope-Medium" }]}>
+                  Visit Nicholas's Github
+                </Text>
+                <Github stroke="#FF5722" width={16} height={16} style={{ marginLeft: 8 }} />
+              </TouchableOpacity>
+            </LinearGradient>
+          </Animated.View>
 
-        {/* Team Section */}
-        <Animated.View entering={FadeInDown.duration(500).delay(700)}>
-          <Text style={[
-            styles.sectionTitle,
-            { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Bold" }
-          ]}>
-            The Faces Behind Ishaara
-          </Text>
-        </Animated.View>
-        
-        <View style={styles.teamGrid}>
-          {teamMembers.map((member, index) => (
+          {/* Team Section */}
+          <Animated.View 
+            entering={FadeInDown.duration(500).delay(700)}
+            style={styles.teamHeaderContainer}
+          >
+            <LinearGradient
+              colors={isDark ? 
+                ["rgba(15, 98, 254, 0.3)", "rgba(139, 92, 246, 0.3)"] : 
+                ["rgba(240, 248, 255, 0.9)", "rgba(224, 242, 254, 0.9)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.teamHeaderGradient}
+            >
+              <Text style={[
+                styles.sectionTitle,
+                { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Bold" }
+              ]}>
+                The Faces Behind Ishaara
+              </Text>
+              <Text 
+                style={[
+                  styles.teamHeaderSubtitle, 
+                  { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Regular" }
+                ]}
+              >
+                Meet our talented development team
+              </Text>
+            </LinearGradient>
+          </Animated.View>
+          
+          <View style={styles.teamGrid}>
+            {teamMembers.map((member, index) => (
+              <Animated.View 
+                key={index}
+                entering={FadeInDown.duration(500).delay(800 + index * 100)}
+                style={styles.teamCardContainer}
+              >
+                <View style={[
+                  styles.teamCard,
+                  { 
+                    backgroundColor: isDark ? "#161B22" : "#FFFFFF",
+                    borderColor: isDark ? "rgba(230, 237, 243, 0.1)" : "rgba(28, 28, 28, 0.1)" 
+                  }
+                ]}>
+                  <View style={styles.teamCardInner}>
+                    <Image
+                      source={member.image}
+                      style={styles.teamImage}
+                      resizeMode="cover"
+                    />
+                    <LinearGradient
+                      colors={["transparent", "rgba(0, 0, 0, 0.8)"]}
+                      style={styles.teamOverlay}
+                    >
+                      <View style={styles.teamInfo}>
+                        <Text style={[styles.teamName, { fontFamily: "Manrope-Bold" }]}>
+                          {member.name}
+                        </Text>
+                        <Text style={[styles.teamRole, { fontFamily: "Manrope-Medium" }]}>
+                          {member.role}
+                        </Text>
+                        <View style={styles.socialIcons}>
+                          {member.social.twitter && (
+                            <TouchableOpacity 
+                              onPress={() => openLink(member.social.twitter)}
+                              style={styles.socialIcon}
+                            >
+                              <Twitter stroke="#FFFFFF" width={18} height={18} />
+                            </TouchableOpacity>
+                          )}
+                          {member.social.instagram && (
+                            <TouchableOpacity 
+                              onPress={() => openLink(member.social.instagram)}
+                              style={styles.socialIcon}
+                            >
+                              <Instagram stroke="#FFFFFF" width={18} height={18} />
+                            </TouchableOpacity>
+                          )}
+                          {member.social.github && (
+                            <TouchableOpacity 
+                              onPress={() => openLink(member.social.github)}
+                              style={styles.socialIcon}
+                            >
+                              <Github stroke="#FFFFFF" width={18} height={18} />
+                            </TouchableOpacity>
+                          )}
+                          {member.social.linkedin && (
+                            <TouchableOpacity 
+                              onPress={() => openLink(member.social.linkedin)}
+                              style={styles.socialIcon}
+                            >
+                              <Linkedin stroke="#FFFFFF" width={18} height={18} />
+                            </TouchableOpacity>
+                          )}
+                        </View>
+                      </View>
+                    </LinearGradient>
+                  </View>
+                </View>
+              </Animated.View>
+            ))}
+          </View>
+
+          {/* Mentor Section */}
+          <Animated.View 
+            entering={FadeInDown.duration(500).delay(1200)}
+            style={styles.mentorHeaderContainer}
+          >
+            <LinearGradient
+              colors={isDark ? 
+                ["rgba(15, 98, 254, 0.3)", "rgba(139, 92, 246, 0.3)"] : 
+                ["rgba(240, 248, 255, 0.9)", "rgba(224, 242, 254, 0.9)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.mentorHeaderGradient}
+            >
+              <Text style={[
+                styles.sectionTitle,
+                { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Bold" }
+              ]}>
+                The Mentor Behind Ishaara
+              </Text>
+              <Text 
+                style={[
+                  styles.mentorHeaderSubtitle, 
+                  { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Regular" }
+                ]}
+              >
+                Our guiding light and inspiration
+              </Text>
+            </LinearGradient>
+          </Animated.View>
+          
+          <View style={styles.mentorContainer}>
             <Animated.View 
-              key={index}
-              entering={FadeInDown.duration(500).delay(800 + index * 100)}
-              style={styles.teamCardContainer}
+              entering={FadeInDown.duration(500).delay(1300)}
+              style={styles.mentorCardContainer}
             >
               <View style={[
-                styles.teamCard,
+                styles.mentorCard,
                 { 
                   backgroundColor: isDark ? "#161B22" : "#FFFFFF",
                   borderColor: isDark ? "rgba(230, 237, 243, 0.1)" : "rgba(28, 28, 28, 0.1)" 
                 }
               ]}>
-                <View style={styles.teamCardInner}>
+                <View style={styles.mentorCardInner}>
                   <Image
-                    source={member.image}
-                    style={styles.teamImage}
+                    source={mentor.image}
+                    style={styles.mentorImage}
                     resizeMode="cover"
                   />
                   <LinearGradient
-                    colors={["transparent", "rgba(0, 0, 0, 0.7)"]}
-                    style={styles.teamOverlay}
+                    colors={["transparent", "rgba(0, 0, 0, 0.8)"]}
+                    style={styles.mentorOverlay}
                   >
-                    <View style={styles.teamInfo}>
-                      <Text style={[styles.teamName, { fontFamily: "Manrope-Bold" }]}>
-                        {member.name}
+                    <View style={styles.mentorInfo}>
+                      <Text style={[styles.mentorName, { fontFamily: "Manrope-Bold" }]}>
+                        {mentor.name}
                       </Text>
-                      <Text style={[styles.teamRole, { fontFamily: "Manrope-Medium" }]}>
-                        {member.role}
+                      <Text style={[styles.mentorRole, { fontFamily: "Manrope-Medium" }]}>
+                        {mentor.role}
                       </Text>
-                      <View style={styles.socialIcons}>
-                        {member.social.twitter && (
-                          <TouchableOpacity 
-                            onPress={() => openLink(member.social.twitter)}
-                            style={styles.socialIcon}
-                          >
-                            <Twitter stroke="#FFFFFF" width={18} height={18} />
-                          </TouchableOpacity>
-                        )}
-                        {member.social.instagram && (
-                          <TouchableOpacity 
-                            onPress={() => openLink(member.social.instagram)}
-                            style={styles.socialIcon}
-                          >
-                            <Instagram stroke="#FFFFFF" width={18} height={18} />
-                          </TouchableOpacity>
-                        )}
-                        {member.social.github && (
-                          <TouchableOpacity 
-                            onPress={() => openLink(member.social.github)}
-                            style={styles.socialIcon}
-                          >
-                            <Github stroke="#FFFFFF" width={18} height={18} />
-                          </TouchableOpacity>
-                        )}
-                        {member.social.linkedin && (
-                          <TouchableOpacity 
-                            onPress={() => openLink(member.social.linkedin)}
-                            style={styles.socialIcon}
-                          >
-                            <Linkedin stroke="#FFFFFF" width={18} height={18} />
-                          </TouchableOpacity>
-                        )}
-                      </View>
                     </View>
                   </LinearGradient>
                 </View>
               </View>
             </Animated.View>
-          ))}
-        </View>
-
-        {/* Mentor Section */}
-        <Animated.View entering={FadeInDown.duration(500).delay(1200)}>
-          <Text style={[
-            styles.sectionTitle,
-            { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Bold" }
-          ]}>
-            The Mentor Behind Ishaara
-          </Text>
-        </Animated.View>
-        
-        <View style={styles.mentorContainer}>
+          </View>
+          
+          {/* Made with Love Section */}
           <Animated.View 
-            entering={FadeInDown.duration(500).delay(1300)}
-            style={styles.mentorCardContainer}
+            entering={FadeInDown.duration(500).delay(1400)}
+            style={styles.madeWithLoveContainer}
           >
-            <View style={[
-              styles.mentorCard,
-              { 
-                backgroundColor: isDark ? "#161B22" : "#FFFFFF",
-                borderColor: isDark ? "rgba(230, 237, 243, 0.1)" : "rgba(28, 28, 28, 0.1)" 
-              }
-            ]}>
-              <View style={styles.mentorCardInner}>
-                <Image
-                  source={mentor.image}
-                  style={styles.mentorImage}
-                  resizeMode="cover"
-                />
-                <LinearGradient
-                  colors={["transparent", "rgba(0, 0, 0, 0.7)"]}
-                  style={styles.mentorOverlay}
-                >
-                  <View style={styles.mentorInfo}>
-                    <Text style={[styles.mentorName, { fontFamily: "Manrope-Bold" }]}>
-                      {mentor.name}
-                    </Text>
-                    <Text style={[styles.mentorRole, { fontFamily: "Manrope-Medium" }]}>
-                      {mentor.role}
-                    </Text>
-                  </View>
-                </LinearGradient>
-              </View>
+            <View style={styles.madeWithLoveContent}>
+              <Text style={[
+                styles.madeWithLoveText,
+                { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Medium" }
+              ]}>
+                Made with
+              </Text>
+              <Heart width={20} height={20} stroke="#FF5722" fill="#FF5722" style={{ marginHorizontal: 6 }} />
+              <Text style={[
+                styles.madeWithLoveText,
+                { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Medium" }
+              ]}>
+                by Team Ishaara
+              </Text>
             </View>
           </Animated.View>
-        </View>
-        
-        {/* Bottom padding for scrolling past bottom navbar */}
-        <View style={{ height: 100 }} />
-      </ScrollView>
-    </SafeAreaView>
+          
+          {/* Bottom padding for scrolling past bottom navbar */}
+          <View style={{ height: 100 }} />
+        </ScrollView>
+      </SafeAreaView>
     </LayoutWithNavbar>
   )
 }
@@ -396,15 +468,34 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: 16,
   },
+  headerContainer: {
+    marginBottom: 24,
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  headerGradient: {
+    padding: 24,
+    borderRadius: 16,
+    alignItems: 'center',
+  },
   pageTitle: {
     fontSize: 28,
     textAlign: "center",
-    marginBottom: 24,
+    marginBottom: 8,
+  },
+  headerSubtitle: {
+    fontSize: 16,
+    textAlign: "center",
   },
   sectionTitle: {
     fontSize: 22,
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 8,
   },
   infoContainer: {
     marginBottom: 24,
@@ -417,7 +508,7 @@ const styles = StyleSheet.create({
   },
   cardGradient: {
     borderRadius: 16,
-    padding: 16,
+    padding: 20,
     borderWidth: 1,
   },
   infoText: {
@@ -425,52 +516,73 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   imageContainer: {
-    height: 200,
+    height: 220,
     borderRadius: 16,
     overflow: "hidden",
+    position: "relative",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
   },
   infoImage: {
     width: "100%",
     height: "100%",
   },
+  imageOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
   sectionContainer: {
     marginBottom: 24,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
   },
   legacyCard: {
     borderRadius: 16,
-    padding: 20,
-    borderWidth: 1,
+    padding: 24,
+    alignItems: "center",
   },
   legacyTitle: {
-    fontSize: 20,
-    marginBottom: 12,
+    fontSize: 22,
+    marginBottom: 16,
+    textAlign: "center",
   },
   legacyText: {
     fontSize: 15,
     lineHeight: 24,
-    marginBottom: 16,
+    marginBottom: 20,
+    textAlign: "center",
   },
   legacyButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     borderRadius: 12,
-    borderWidth: 1,
-    alignSelf: "center",
+    backgroundColor: "#FFFFFF",
   },
   legacyButtonText: {
-    fontSize: 14,
+    fontSize: 16,
+    color: "#0F62FE",
   },
   thanksCard: {
     borderRadius: 16,
-    padding: 20,
-    borderWidth: 1,
+    padding: 24,
+    alignItems: "center",
   },
   thanksTitle: {
-    fontSize: 20,
-    marginBottom: 16,
+    fontSize: 22,
+    marginBottom: 20,
+    textAlign: "center",
   },
   thanksProfile: {
     flexDirection: "row",
@@ -482,6 +594,8 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     marginRight: 12,
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
   },
   thanksName: {
     fontSize: 18,
@@ -492,21 +606,40 @@ const styles = StyleSheet.create({
   thanksText: {
     fontSize: 15,
     lineHeight: 24,
-    marginBottom: 16,
+    marginBottom: 20,
+    textAlign: "center",
   },
   thanksButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     borderRadius: 12,
-    backgroundColor: "#0F62FE",
-    alignSelf: "center",
+    backgroundColor: "#FFFFFF",
   },
   thanksButtonText: {
+    fontSize: 16,
+    color: "#FF5722",
+  },
+  teamHeaderContainer: {
+    marginBottom: 24,
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  teamHeaderGradient: {
+    padding: 20,
+    borderRadius: 16,
+    alignItems: 'center',
+  },
+  teamHeaderSubtitle: {
     fontSize: 14,
-    color: "#FFFFFF",
+    textAlign: "center",
   },
   teamGrid: {
     flexDirection: "row",
@@ -517,6 +650,11 @@ const styles = StyleSheet.create({
   teamCardContainer: {
     width: width / 2 - 24,
     marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
   },
   teamCard: {
     height: 200,
@@ -567,12 +705,36 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  mentorHeaderContainer: {
+    marginBottom: 24,
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  mentorHeaderGradient: {
+    padding: 20,
+    borderRadius: 16,
+    alignItems: 'center',
+  },
+  mentorHeaderSubtitle: {
+    fontSize: 14,
+    textAlign: "center",
+  },
   mentorContainer: {
     alignItems: "center",
-    marginBottom: 40,
+    marginBottom: 24,
   },
   mentorCardContainer: {
     width: 200,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
   },
   mentorCard: {
     height: 300,
@@ -609,5 +771,18 @@ const styles = StyleSheet.create({
   mentorRole: {
     fontSize: 12,
     color: "#E6EDF3",
+  },
+  madeWithLoveContainer: {
+    marginTop: 16,
+    marginBottom: 24,
+    alignItems: "center",
+  },
+  madeWithLoveContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  madeWithLoveText: {
+    fontSize: 14,
   },
 })
