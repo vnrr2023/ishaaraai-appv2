@@ -31,9 +31,9 @@ import { useTheme } from "./../components/theme-provider"
 import { useFonts } from "expo-font"
 import * as Haptics from "expo-haptics"
 import Animated, { FadeIn, FadeInDown, FadeInUp, FadeOut } from "react-native-reanimated"
-import LayoutWithNavbar from "../components/LayoutWithNavbar"
+import Navbar from "../components/navbar"
 
-const { width, height } = Dimensions.get("window")
+const { width } = Dimensions.get("window")
 
 // Replace with your actual API key
 const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"
@@ -41,24 +41,9 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemi
 
 // Assuming labels.json is imported correctly
 const validSigns = [
-  "I",
-  "afternoon",
-  "bye",
-  "deaf",
-  "good",
-  "hello",
-  "home",
-  "how are you",
-  "i am fine",
-  "indian",
-  "live",
-  "morning",
-  "namaste",
-  "name",
-  "sorry",
-  "thank you",
-  "time",
-  "yes",
+  "I", "afternoon", "bye", "deaf", "good", "hello", "home",
+  "how are you", "i am fine", "indian", "live", "morning",
+  "namaste", "name", "sorry", "thank you", "time", "yes",
 ]
 
 export default function TranslateScreen() {
@@ -350,12 +335,11 @@ export default function TranslateScreen() {
   }
 
   return (
-    <LayoutWithNavbar>
-    <SafeAreaView style={[styles.container, { backgroundColor: isDark ? "#0D1117" : "#F8FAFC" }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: isDark ? "#0D1117" : "#F8FAFC" }]} edges={["top"]}>
       <StatusBar style={isDark ? "light" : "dark"} />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { borderBottomColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" }]}>
         <Text style={[styles.headerTitle, { color: isDark ? "#E6EDF3" : "#1C1C1C", fontFamily: "Manrope-Bold" }]}>
           Sign Language Translator
         </Text>
@@ -366,71 +350,85 @@ export default function TranslateScreen() {
 
       <ScrollView ref={scrollViewRef} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Camera Section */}
-        <Animated.View entering={FadeInDown.duration(500).delay(100)} style={styles.cameraSection}>
-          <View
-            style={[
-              styles.cameraContainer,
-              { borderColor: isDark ? "rgba(230, 237, 243, 0.1)" : "rgba(28, 28, 28, 0.1)" },
-            ]}
+        <Animated.View 
+          entering={FadeInDown.duration(500).delay(100)} 
+          style={[styles.card, { backgroundColor: isDark ? "#161B22" : "#FFFFFF" }]}
+        >
+          <LinearGradient
+            colors={isDark ? ["#0F62FE", "#0D47A1"] : ["#0F62FE", "#2196F3"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.cardHeader}
           >
-            {isCameraOn ? (
-              <CameraView style={styles.camera} facing={facing}>
-                <View style={styles.cameraControls}>
-                  <TouchableOpacity style={styles.flipCameraButton} onPress={toggleCameraFacing}>
-                    <RefreshCw width={20} height={20} color="white" />
-                  </TouchableOpacity>
+            <Text style={[styles.cardHeaderTitle, { fontFamily: "Manrope-Bold" }]}>Camera</Text>
+          </LinearGradient>
 
-                  {inferRunning && (
-                    <View style={styles.recordingIndicator}>
-                      <View style={styles.recordingDot} />
-                      <Text style={[styles.recordingText, { fontFamily: "Manrope-Medium" }]}>Detecting</Text>
-                    </View>
-                  )}
+          <View style={styles.cardContent}>
+            <View
+              style={[
+                styles.cameraContainer,
+                { borderColor: isDark ? "rgba(230, 237, 243, 0.1)" : "rgba(28, 28, 28, 0.1)" },
+              ]}
+            >
+              {isCameraOn ? (
+                <CameraView style={styles.camera} facing={facing}>
+                  <View style={styles.cameraControls}>
+                    <TouchableOpacity style={styles.flipCameraButton} onPress={toggleCameraFacing}>
+                      <RefreshCw width={20} height={20} color="white" />
+                    </TouchableOpacity>
+
+                    {inferRunning && (
+                      <View style={styles.recordingIndicator}>
+                        <View style={styles.recordingDot} />
+                        <Text style={[styles.recordingText, { fontFamily: "Manrope-Medium" }]}>Detecting</Text>
+                      </View>
+                    )}
+                  </View>
+                </CameraView>
+              ) : (
+                <View style={styles.cameraPlaceholder}>
+                  <CameraOff width={64} height={64} color={isDark ? "#8B949E" : "#5E6C84"} />
+                  <Text
+                    style={[
+                      styles.cameraPlaceholderText,
+                      { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Medium" },
+                    ]}
+                  >
+                    Camera is turned off
+                  </Text>
                 </View>
-              </CameraView>
-            ) : (
-              <View style={styles.cameraPlaceholder}>
-                <CameraOff width={64} height={64} color={isDark ? "#8B949E" : "#5E6C84"} />
-                <Text
-                  style={[
-                    styles.cameraPlaceholderText,
-                    { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Medium" },
-                  ]}
-                >
-                  Camera is turned off
-                </Text>
-              </View>
-            )}
-          </View>
+              )}
+            </View>
 
-          <View style={styles.cameraToggleContainer}>
-            <Text
-              style={[
-                styles.cameraToggleLabel,
-                { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Medium" },
-              ]}
-            >
-              Camera {isCameraOn ? "On" : "Off"}
-            </Text>
-            <TouchableOpacity
-              style={[
-                styles.cameraToggleButton,
-                isCameraOn ? { backgroundColor: "#0F62FE" } : { backgroundColor: isDark ? "#161B22" : "#E2E8F0" },
-              ]}
-              onPress={toggleCamera}
-            >
-              <View style={[styles.cameraToggleThumb, isCameraOn ? { transform: [{ translateX: 22 }] } : {}]} />
-            </TouchableOpacity>
-          </View>
+            <View style={styles.cameraToggleContainer}>
+              <Text
+                style={[
+                  styles.cameraToggleLabel,
+                  { color: isDark ? "#8B949E" : "#5E6C84", fontFamily: "Manrope-Medium" },
+                ]}
+              >
+                Camera {isCameraOn ? "On" : "Off"}
+              </Text>
+              <TouchableOpacity
+                style={[
+                  styles.cameraToggleButton,
+                  isCameraOn ? { backgroundColor: "#0F62FE" } : { backgroundColor: isDark ? "#161B22" : "#E2E8F0" },
+                ]}
+                onPress={toggleCamera}
+              >
+                <View style={[styles.cameraToggleThumb, isCameraOn ? { transform: [{ translateX: 22 }] } : {}]} />
+              </TouchableOpacity>
+            </View>
 
-          {error ? <CustomAlert title="Error" message={error} variant="destructive" /> : null}
+            {error ? <CustomAlert title="Error" message={error} variant="destructive" /> : null}
+          </View>
         </Animated.View>
 
         {/* Instructions Section */}
         {showInstructions && (
-          <Animated.View
-            entering={FadeInDown.duration(500).delay(200)}
-            style={[styles.card, { backgroundColor: isDark ? "#161B22" : "white" }]}
+          <Animated.View 
+            entering={FadeInDown.duration(500).delay(200)} 
+            style={[styles.card, { backgroundColor: isDark ? "#161B22" : "#FFFFFF" }]}
           >
             <LinearGradient
               colors={isDark ? ["#FF9800", "#FF5722"] : ["#FF5722", "#FF9800"]}
@@ -470,12 +468,12 @@ export default function TranslateScreen() {
         )}
 
         {/* Current Label Section */}
-        <Animated.View
-          entering={FadeInDown.duration(500).delay(300)}
-          style={[styles.card, { backgroundColor: isDark ? "#161B22" : "white" }]}
+        <Animated.View 
+          entering={FadeInDown.duration(500).delay(300)} 
+          style={[styles.card, { backgroundColor: isDark ? "#161B22" : "#FFFFFF" }]}
         >
           <LinearGradient
-            colors={isDark ? ["#0F62FE", "#0D47A1"] : ["#0F62FE", "#2196F3"]}
+            colors={isDark ? ["#8B5CF6", "#6366F1"] : ["#8B5CF6", "#A78BFA"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.cardHeader}
@@ -515,9 +513,9 @@ export default function TranslateScreen() {
         </Animated.View>
 
         {/* Translation Section */}
-        <Animated.View
-          entering={FadeInDown.duration(500).delay(400)}
-          style={[styles.card, { backgroundColor: isDark ? "#161B22" : "white" }]}
+        <Animated.View 
+          entering={FadeInDown.duration(500).delay(400)} 
+          style={[styles.card, { backgroundColor: isDark ? "#161B22" : "#FFFFFF" }]}
         >
           <LinearGradient
             colors={isDark ? ["#10B981", "#059669"] : ["#10B981", "#34D399"]}
@@ -636,9 +634,12 @@ export default function TranslateScreen() {
             </View>
           </View>
         </Animated.View>
+
+        {/* Bottom padding for scrolling past bottom navbar */}
+        <View style={{ height: 100 }} />
       </ScrollView>
+      <Navbar />
     </SafeAreaView>
-    </LayoutWithNavbar>    
   )
 }
 
@@ -653,7 +654,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(0, 0, 0, 0.05)",
   },
   headerTitle: {
     fontSize: 20,
@@ -663,9 +663,26 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 16,
+    gap: 16,
   },
-  cameraSection: {
-    marginBottom: 16,
+  card: {
+    borderRadius: 16,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  cardHeader: {
+    padding: 16,
+  },
+  cardHeaderTitle: {
+    fontSize: 18,
+    color: "white",
+  },
+  cardContent: {
+    padding: 16,
   },
   cameraContainer: {
     width: "100%",
@@ -745,26 +762,6 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     backgroundColor: "white",
-  },
-  card: {
-    borderRadius: 16,
-    overflow: "hidden",
-    marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  cardHeader: {
-    padding: 16,
-  },
-  cardHeaderTitle: {
-    fontSize: 18,
-    color: "white",
-  },
-  cardContent: {
-    padding: 16,
   },
   instructionsList: {
     gap: 12,
